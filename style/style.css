@@ -95,11 +95,14 @@ ul,li{
 
 .displayNone {
     font-size: .8rem;
+    display: none;
+}
+
+.fa-check {
     position: absolute;
     top:50%;
     left:50%;
     transform: translate(-50%,-50%);
-    display: none;
 }
 
 .edit-delete {

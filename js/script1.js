@@ -1,8 +1,9 @@
-(function() {
+(function () {
     const taskName = document.querySelector('.task-name')
     const addTask = document.querySelector('.add-task')
     const toAddForm = document.querySelector('.to-add')
     const ul = document.querySelector('#todo-list')
+    const lis = document.querySelectorAll('.task-item')
 
     const tasks = [
         {
@@ -17,24 +18,24 @@
         }
     ]
 
-    function createLi (obj){
+    function createLi(obj) {
         const li = document.createElement('li')
         li.className = 'task-item'
-        // ul.appendChild(li)
+        ul.appendChild(li)
 
         const iCheck = document.createElement('i')
         iCheck.className = 'fa-regular fa-square-full'
         li.appendChild(iCheck)
 
-        const iConfirmCheck =  document.createElement('i')
+        const iConfirmCheck = document.createElement('i')
         iConfirmCheck.className = 'fa-solid fa-check displayNone'
         iCheck.appendChild(iConfirmCheck)
 
-        const p = document.createElement(p)
+        const p = document.createElement('p')
         p.className = 'name-the-task'
         li.appendChild(p)
 
-        const divEditDelete = createElement('div')
+        const divEditDelete = document.createElement('div')
         divEditDelete.className = 'edit-delete'
         li.appendChild(divEditDelete)
 
@@ -64,14 +65,18 @@
 
         p.textContent = obj.name
 
+        clicar(li)
         return li
+
     }
+
 
     function addLi (e) {
         if (taskName.value == '') {
             alert('digite os dados')
             taskName.focus()
         } else {
+            addTasks(taskName.value)
             renderLi()
             taskName.value = ''
             taskName.focus()
@@ -87,6 +92,24 @@
         })
     }
 
+    function addTasks(task) {
+        tasks.push({
+            name: task,
+            creation: Date.now(),
+            completed: false
+        })
+    }
+
+  
+
     toAddForm.addEventListener('submit', addLi)
+
+    function clicar(li) {
+        li.addEventListener('click', function () {
+            console.log(li)
+        })
+    }
+
+    renderLi()
 
 })()
