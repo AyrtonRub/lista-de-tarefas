@@ -118,18 +118,20 @@ ul,li{
 
 .container-edit {
     position: absolute;
-    background-color: #686de0;
+    background-color: #4b50e9;
     display: flex;
     gap: .5rem;
-    padding: 1rem;
+    padding: .75rem;
     top: 40px;
-    left: 100px;
+    left: 20px;
     border-radius: 0 5px 0 5px;
+    z-index: 9999;
     display: none;
 }
 
 .new-task-name {
     padding: .2rem;
+    width: 140px;
     outline: none;
     border: none;
 }
@@ -138,6 +140,7 @@ ul,li{
 .cancel {
     padding: .4rem;
     font-size: .7rem;
+    width: 50px;
     background-color: #f0932b;
     outline: none;
     border: none;

@@ -3,7 +3,7 @@
     const addTask = document.querySelector('.add-task')
     const toAddForm = document.querySelector('.to-add')
     const ul = document.querySelector('#todo-list')
-    const lis = document.querySelectorAll('.task-item')
+    const lis = document.getElementsByClassName('task-item')
 
     const tasks = [
         {
@@ -25,6 +25,7 @@
 
         const iCheck = document.createElement('i')
         iCheck.className = 'fa-regular fa-square-full'
+        iCheck.setAttribute('data-action', 'iCheck')
         li.appendChild(iCheck)
 
         const iConfirmCheck = document.createElement('i')
@@ -41,11 +42,13 @@
 
         const iEdit = document.createElement('i')
         iEdit.className = 'fa-regular fa-pen-to-square'
+        iEdit.setAttribute('data-action', 'iEdit')
         divEditDelete.appendChild(iEdit)
 
-        const iCancel = document.createElement('i')
-        iCancel.className = 'fa-regular fa-trash-can'
-        divEditDelete.appendChild(iCancel)
+        const iDelet = document.createElement('i')
+        iDelet.className = 'fa-regular fa-trash-can'
+        iDelet.setAttribute('data-action', 'iDelet')
+        divEditDelete.appendChild(iDelet)
 
         const divContainerEdit = document.createElement('div')
         divContainerEdit.className = 'container-edit'
@@ -55,23 +58,27 @@
         inputNewTask.className = 'new-task-name'
         divContainerEdit.appendChild(inputNewTask)
 
-        const inputAlter = document.createElement('input')
+        const inputAlter = document.createElement('button')
         inputAlter.className = 'to-alter'
+        inputAlter.textContent = 'Alter'
+        inputAlter.setAttribute('data-action', 'inputAlter')
         divContainerEdit.appendChild(inputAlter)
 
-        const inputCancel = document.createElement('input')
+        const inputCancel = document.createElement('button')
         inputCancel.className = 'cancel'
+        inputCancel.textContent = 'Cancel'
+        inputCancel.setAttribute('data-action', 'inputCancel')
         divContainerEdit.appendChild(inputCancel)
 
         p.textContent = obj.name
 
-        clicar(li)
+     
         return li
 
     }
 
 
-    function addLi (e) {
+    function addLi(e) {
         if (taskName.value == '') {
             alert('digite os dados')
             taskName.focus()
@@ -100,16 +107,49 @@
         })
     }
 
-  
+    function clickUl(e) {
+        const dataAction = e.target.getAttribute('data-action')
+
+
+        if (!dataAction) return
+
+        let currentLi = e.target
+
+        while(currentLi.nodeName !== 'LI') {
+            currentLi = currentLi.parentElement
+        }
+
+        const liIndex = [...lis].indexOf(currentLi)
+        
+
+        const actions = {
+            iEdit: function() {
+                const divContainerEdit = currentLi.querySelector('.container-edit');
+                [...ul.querySelectorAll('.container-edit')].forEach(container => {
+                    container.removeAttribute('style')
+                });
+
+                divContainerEdit.style.display = 'flex'
+            },
+
+            inputCancel: function() {
+                const divContainerEdit = currentLi.querySelector('.container-edit');
+                divContainerEdit.style.display = 'none'
+            },
+
+            iDelet: function() {
+                tasks.splice(liIndex, 1)
+                renderLi()
+            }
+
+        }
+        if (actions[dataAction]) {
+            actions[dataAction]()
+        }
+    };
 
     toAddForm.addEventListener('submit', addLi)
-
-    function clicar(li) {
-        li.addEventListener('click', function () {
-            console.log(li)
-        })
-    }
-
+    ul.addEventListener('click', clickUl)
     renderLi()
 
 })()
