@@ -5,20 +5,33 @@
     const ul = document.querySelector('#todo-list')
     const lis = document.getElementsByClassName('task-item')
 
-    const tasks = [
-        {
-            name: 'task1',
-            creation: Date.now(),
-            completed: false
-        },
-        {
-            name: 'task2',
-            creation: Date.now(),
-            completed: false
-        }
-    ]
 
+    
+    const tasks = getSavedData()
 
+    function getSavedData() {
+        let taskData = localStorage.getItem('task')
+        taskData = JSON.parse(taskData)
+
+        return taskData && taskData.length ? taskData : [
+            {
+                name: 'task1',
+                creation: Date.now(),
+                completed: false
+            },
+            {
+                name: 'task2',
+                creation: Date.now(),
+                completed: false
+            }
+        ]
+    }
+    
+    function setNewData() {
+        localStorage.setItem('task', JSON.stringify(tasks))
+    }
+    
+    setNewData()
 
     function createLi(obj) {
         const li = document.createElement('li')
@@ -91,6 +104,7 @@
         } else {
             addTasks(taskName.value)
             renderLi()
+            
             taskName.value = ''
             taskName.focus()
         }
@@ -111,6 +125,7 @@
             creation: Date.now(),
             completed: false
         })
+        setNewData()
     }
 
     function clickUl(e) {
@@ -146,20 +161,21 @@
             iDelet: function() {
                 tasks.splice(liIndex, 1)
                 renderLi()
+                setNewData()
             },
 
             inputAlter: function() {
                 const newName = currentLi.querySelector('.new-task-name').value
                 tasks[liIndex].name = newName
                 renderLi()
+                setNewData()
             },
 
             iCheck: function() {
-                const iConfirmCheck = currentLi.querySelector('.iConfirmCheck')
                 tasks[liIndex].completed = !tasks[liIndex].completed
-                console.log(tasks[liIndex].completed)
-                renderLi()
                 
+                renderLi()
+                setNewData()
             }
 
 
