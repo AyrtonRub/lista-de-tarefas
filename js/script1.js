@@ -18,6 +18,8 @@
         }
     ]
 
+
+
     function createLi(obj) {
         const li = document.createElement('li')
         li.className = 'task-item'
@@ -28,9 +30,13 @@
         iCheck.setAttribute('data-action', 'iCheck')
         li.appendChild(iCheck)
 
-        const iConfirmCheck = document.createElement('i')
-        iConfirmCheck.className = 'fa-solid fa-check displayNone'
-        iCheck.appendChild(iConfirmCheck)
+        iCheck.innerHTML += `
+            <i class='fa-solid fa-check ${obj.completed == true ? "":"displayNone"}' data-action= 'iCheck'></i>
+        `
+        console.log()
+        // const iConfirmCheck = document.createElement('i')
+        // iConfirmCheck.className = 'fa-solid fa-check displayNone'
+        // iCheck.appendChild(iConfirmCheck)
 
         const p = document.createElement('p')
         p.className = 'name-the-task'
@@ -140,7 +146,22 @@
             iDelet: function() {
                 tasks.splice(liIndex, 1)
                 renderLi()
+            },
+
+            inputAlter: function() {
+                const newName = currentLi.querySelector('.new-task-name').value
+                tasks[liIndex].name = newName
+                renderLi()
+            },
+
+            iCheck: function() {
+                const iConfirmCheck = currentLi.querySelector('.iConfirmCheck')
+                tasks[liIndex].completed = !tasks[liIndex].completed
+                console.log(tasks[liIndex].completed)
+                renderLi()
+                
             }
+
 
         }
         if (actions[dataAction]) {
